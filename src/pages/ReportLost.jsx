@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import { Link } from 'react-router-dom';
 import Section from '../components/ui/Section';
+import { useApp } from '../context/AppContext';
 import { CATEGORIES, LOCATIONS } from '../data/staticData';
 import './ReportForm.css';
 
@@ -16,7 +17,9 @@ const INITIAL = {
 };
 
 export default function ReportLost() {
-  const [form, setForm]       = useState(INITIAL);
+  const { addLostItem } = useApp();
+
+  const [form, setForm]           = useState(INITIAL);
   const [submitted, setSubmitted] = useState(false);
 
   function handleChange(e) {
@@ -26,7 +29,22 @@ export default function ReportLost() {
 
   function handleSubmit(e) {
     e.preventDefault();
-    // Static UI only — no real submission
+
+    const item = {
+      id:          `l-${Date.now()}`,
+      type:        'lost',
+      title:       form.title,
+      category:    form.category,
+      location:    form.location,
+      date:        form.date,
+      description: form.description,
+      contact:     form.contact,
+      color:       form.color,
+      brand:       form.brand,
+    };
+
+    // Add to global state — context will auto-compute matches
+    addLostItem(item);
     setSubmitted(true);
   }
 

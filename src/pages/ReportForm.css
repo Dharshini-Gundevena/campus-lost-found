@@ -125,3 +125,62 @@
   flex-wrap: wrap;
   justify-content: center;
 }
+
+/* ── Match results (ReportFound post-submit) ──────────────── */
+.report-success-page {
+  padding-bottom: 3rem;
+}
+
+.report-matches {
+  background: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-lg);
+  padding: 1.5rem;
+  margin-top: 1.5rem;
+  box-shadow: var(--shadow-sm);
+}
+
+.report-matches__header {
+  display: flex;
+  gap: 1rem;
+  align-items: flex-start;
+  margin-bottom: 1.25rem;
+}
+
+.report-matches__icon { font-size: 2rem; line-height: 1; flex-shrink: 0; }
+
+.report-matches__title {
+  font-size: 1.05rem;
+  font-weight: 700;
+  margin-bottom: .25rem;
+}
+
+.report-matches__sub {
+  font-size: .86rem;
+  color: var(--color-text-muted);
+  line-height: 1.5;
+}
+
+.report-matches__grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: 1rem;
+}
+
+.report-matches__note {
+  font-size: .8rem;
+  color: var(--color-text-muted);
+  margin-top: 1rem;
+  padding-top: .9rem;
+  border-top: 1px solid var(--color-border);
+}
+
+.report-matches--none {
+  display: flex;
+  align-items: center;
+  gap: .75rem;
+  color: var(--color-text-muted);
+  font-size: .9rem;
+  padding: 1rem 1.5rem;
+}
+.report-matches--none span { font-size: 1.4rem; }

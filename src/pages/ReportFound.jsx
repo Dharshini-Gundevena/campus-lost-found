@@ -1,7 +1,10 @@
 import { useState } from 'react';
 import { Link } from 'react-router-dom';
 import Section from '../components/ui/Section';
+import { MatchCard } from '../components/ui/Card';
+import { useApp } from '../context/AppContext';
 import { CATEGORIES, LOCATIONS } from '../data/staticData';
+import { computeMatches } from '../utils/matcher';
 import './ReportForm.css';
 
 const INITIAL = {
@@ -16,8 +19,12 @@ const INITIAL = {
 };
 
 export default function ReportFound() {
-  const [form, setForm]           = useState(INITIAL);
-  const [submitted, setSubmitted] = useState(false);
+  const { lostItems, addFoundItem } = useApp();
+
+  const [form, setForm]             = useState(INITIAL);
+  const [submitted, setSubmitted]   = useState(false);
+  const [newItem, setNewItem]       = useState(null);
+  const [autoMatches, setAutoMatches] = useState([]);
 
   function handleChange(e) {
     const { name, value } = e.target;
@@ -26,40 +33,108 @@ export default function ReportFound() {
 
   function handleSubmit(e) {
     e.preventDefault();
-    // Static UI only — no real submission
+
+    const item = {
+      id:             `f-${Date.now()}`,
+      type:           'found',
+      title:          form.title,
+      category:       form.category,
+      location:       form.location,
+      date:           form.date,
+      description:    form.description,
+      contact:        form.contact,
+      color:          form.color,
+      storedAt:       form.storedAt,
+      recoveryStatus: null,
+      claimedBy:      null,
+    };
+
+    // Compute matches BEFORE adding to context so we can display them
+    const matches = computeMatches(lostItems, [item]);
+    setAutoMatches(matches);
+
+    // Add to global state (also triggers notifications for high/medium matches)
+    addFoundItem(item);
+
+    setNewItem(item);
     setSubmitted(true);
   }
 
   function handleReset() {
     setForm(INITIAL);
     setSubmitted(false);
+    setNewItem(null);
+    setAutoMatches([]);
   }
 
+  // ── Success / match results screen ──────────────────────────
   if (submitted) {
     return (
-      <div className="report-success">
-        <div className="container report-success__inner">
-          <span className="report-success__icon" aria-hidden="true">✅</span>
-          <h2 className="report-success__title">Thank You!</h2>
-          <p className="report-success__msg">
-            Your found item report has been submitted. The owner will be notified if we find a match.
-          </p>
-          <div className="report-success__actions">
-            <button className="btn btn--primary" onClick={handleReset}>Submit Another</button>
-            <Link to="/browse" className="btn btn--outline">Browse Lost Items</Link>
+      <div className="report-success-page">
+        <div className="container">
+          {/* Thank-you banner */}
+          <div className="report-success">
+            <div className="report-success__inner">
+              <span className="report-success__icon" aria-hidden="true">✅</span>
+              <h2 className="report-success__title">Thank You!</h2>
+              <p className="report-success__msg">
+                Your found item report for <strong>"{newItem?.title}"</strong> has been submitted.
+                The owner will be notified if we find a match.
+              </p>
+              <div className="report-success__actions">
+                <button className="btn btn--primary" onClick={handleReset}>
+                  Submit Another
+                </button>
+                <Link to="/browse" className="btn btn--outline">Browse Lost Items</Link>
+              </div>
+            </div>
           </div>
+
+          {/* Auto-match results */}
+          {autoMatches.length > 0 ? (
+            <div className="report-matches">
+              <div className="report-matches__header">
+                <span className="report-matches__icon" aria-hidden="true">🔗</span>
+                <div>
+                  <h3 className="report-matches__title">
+                    {autoMatches.length} Potential Match{autoMatches.length > 1 ? 'es' : ''} Found Automatically
+                  </h3>
+                  <p className="report-matches__sub">
+                    The system compared your report against all lost items and found the following matches.
+                    The owner(s) will be notified.
+                  </p>
+                </div>
+              </div>
+
+              <div className="report-matches__grid">
+                {autoMatches.map(m => (
+                  <MatchCard key={m.id} match={m} />
+                ))}
+              </div>
+
+              <p className="report-matches__note">
+                📌 Matches are ranked by confidence. Campus staff will verify before contacting claimants.
+              </p>
+            </div>
+          ) : (
+            <div className="report-matches report-matches--none">
+              <span aria-hidden="true">🔍</span>
+              <p>No automatic matches found yet. Your report is live — we'll notify you if a match comes in.</p>
+            </div>
+          )}
         </div>
       </div>
     );
   }
 
+  // ── Form ─────────────────────────────────────────────────────
   return (
     <Section
       title="Report a Found Item"
       subtitle="Help reunite someone with their belongings by logging what you found."
     >
       <div className="report-layout">
-        {/* ── Form ─────────────────────────────────────────── */}
+        {/* Form */}
         <form className="report-form" onSubmit={handleSubmit} noValidate>
           <div className="report-form__section-label">Item Details</div>
 
@@ -152,7 +227,7 @@ export default function ReportFound() {
           </div>
         </form>
 
-        {/* ── Sidebar tips ─────────────────────────────────── */}
+        {/* Sidebar tips */}
         <aside className="report-tips">
           <div className="report-tips__card">
             <h3 className="report-tips__heading">💡 Tips for a Better Report</h3>
@@ -162,6 +237,14 @@ export default function ReportFound() {
               <li>Hand in valuables to the nearest campus security desk.</li>
               <li>Take a photo before handing it in if possible.</li>
             </ul>
+          </div>
+          <div className="report-tips__card report-tips__card--info">
+            <h3 className="report-tips__heading">🔗 Auto-Matching</h3>
+            <p style={{ fontSize: '.85rem', color: 'var(--color-text-muted)', lineHeight: 1.5 }}>
+              After you submit, the system automatically compares your report
+              against all active lost items and shows you any potential matches
+              with a confidence score.
+            </p>
           </div>
           <div className="report-tips__card report-tips__card--info">
             <h3 className="report-tips__heading">📋 What Happens Next?</h3>
