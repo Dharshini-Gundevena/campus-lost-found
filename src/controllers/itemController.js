@@ -99,6 +99,10 @@ const validateListQuery = (query) => {
 /**
  * POST /items
  * Report a new lost or found item.
+ *
+ * After persisting the item, runs automatic matching and creates an in-app
+ * notification for the reporter of each matched item (Level 2).
+ * Notification errors are caught and logged but never fail the HTTP response.
  */
 const reportItem = (req, res, next) => {
   try {
@@ -119,6 +123,28 @@ const reportItem = (req, res, next) => {
       contactEmail,
       contactPhone: contactPhone ?? null,
     });
+
+    // ── Level 2: trigger match-based notifications ────────────────────────────
+    // Deferred require avoids a circular-dependency issue at module load time.
+    try {
+      const { findMatches }        = require("../services/matchService");
+      const { createNotification } = require("../services/notificationService");
+
+      const matches = findMatches(item);
+      for (const { item: matched, score, signals } of matches) {
+        // Notify the person who originally reported the matched item.
+        createNotification({
+          recipientEmail: matched.contactEmail,
+          itemId:         matched.id,
+          matchedItemId:  item.id,
+          score,
+          signals,
+        });
+      }
+    } catch (notifErr) {
+      // Never let notification failures affect the primary response.
+      console.error("[notification] failed to create match notifications:", notifErr.message);
+    }
 
     return res.status(201).json({ status: "success", data: item });
   } catch (err) {

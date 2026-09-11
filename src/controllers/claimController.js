@@ -11,6 +11,7 @@ const {
   getClaimById,
   listAllClaims,
   updateClaimStatus,
+  addVerificationDetails,
 } = require("../services/claimService");
 
 const { CLAIM_STATUSES } = require("../models/claimModel");
@@ -54,12 +55,13 @@ const submitClaimHandler = (req, res, next) => {
       return res.status(400).json({ status: "error", errors });
     }
 
-    const { claimantName, claimantEmail, claimantPhone, message } = req.body;
+    const { claimantName, claimantEmail, claimantPhone, message, verificationDetails } = req.body;
     const result = submitClaim(req.params.itemId, {
       claimantName,
       claimantEmail,
       claimantPhone: claimantPhone ?? null,
       message,
+      verificationDetails: verificationDetails ?? null,
     });
 
     if (result.error) {
@@ -171,10 +173,53 @@ const listAllClaimsHandler = (req, res, next) => {
   }
 };
 
+/**
+ * PATCH /claims/:id/verification
+ * Add or replace verification evidence on a pending claim.
+ *
+ * Body: { "verificationDetails": "<non-empty string>" }
+ *
+ * Only allowed while the claim is still pending.
+ * This evidence is required before the claim can be approved.
+ */
+const addVerificationHandler = (req, res, next) => {
+  try {
+    const { verificationDetails } = req.body;
+
+    if (
+      !verificationDetails ||
+      typeof verificationDetails !== "string" ||
+      verificationDetails.trim().length === 0
+    ) {
+      return res.status(400).json({
+        status: "error",
+        errors: ['"verificationDetails" is required and must be a non-empty string'],
+      });
+    }
+
+    if (verificationDetails.trim().length > 1000) {
+      return res.status(400).json({
+        status: "error",
+        errors: ['"verificationDetails" must not exceed 1000 characters'],
+      });
+    }
+
+    const result = addVerificationDetails(req.params.id, verificationDetails);
+    if (result.error) {
+      return res.status(result.code).json({ status: "error", errors: [result.error] });
+    }
+
+    return res.status(200).json({ status: "success", data: result.claim });
+  } catch (err) {
+    next(err);
+  }
+};
+
 module.exports = {
   submitClaimHandler,
   listClaimsHandler,
   getClaimHandler,
   patchClaimStatusHandler,
   listAllClaimsHandler,
+  addVerificationHandler,
 };

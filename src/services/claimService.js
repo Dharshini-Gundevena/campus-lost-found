@@ -38,7 +38,6 @@ const submitClaim = (itemId, data) => {
   claimStore.set(id, claim);
   return { claim };
 };
-
 /**
  * Return all claims for a given item, newest first.
  *
@@ -94,6 +93,8 @@ const listAllClaims = (filters = {}) => {
 /**
  * Update the status of a claim (pending → approved | rejected).
  *
+ * Approval requires that verificationDetails is non-empty.
+ *
  * @param {string} id
  * @param {string} status - One of CLAIM_STATUSES
  * @returns {{ claim: object }|{ error: string, code: number }}
@@ -110,9 +111,46 @@ const updateClaimStatus = (id, status) => {
     };
   }
 
+  // Ownership verification guard — only blocks approval
+  if (status === "approved" && !claim.verificationDetails) {
+    return {
+      error: "Cannot approve a claim without verification evidence. Add verificationDetails via PATCH /claims/:id/verification first.",
+      code: 400,
+    };
+  }
+
   const updated = { ...claim, status, updatedAt: new Date().toISOString() };
   claimStore.set(id, updated);
   return { claim: updated };
 };
 
-module.exports = { submitClaim, listClaimsByItem, getClaimById, listAllClaims, updateClaimStatus };
+/**
+ * Add or replace the verification evidence on a claim.
+ * Can only be applied while the claim is still pending.
+ *
+ * @param {string} id
+ * @param {string} verificationDetails - Non-empty identifying text
+ * @returns {{ claim: object }|{ error: string, code: number }}
+ */
+const addVerificationDetails = (id, verificationDetails) => {
+  const claim = claimStore.get(id);
+  if (!claim) {
+    return { error: `Claim with id "${id}" not found`, code: 404 };
+  }
+  if (claim.status !== "pending") {
+    return {
+      error: `Verification details can only be updated on a pending claim (current status: "${claim.status}")`,
+      code: 409,
+    };
+  }
+
+  const updated = {
+    ...claim,
+    verificationDetails: verificationDetails.trim(),
+    updatedAt: new Date().toISOString(),
+  };
+  claimStore.set(id, updated);
+  return { claim: updated };
+};
+
+module.exports = { submitClaim, listClaimsByItem, getClaimById, listAllClaims, updateClaimStatus, addVerificationDetails };
