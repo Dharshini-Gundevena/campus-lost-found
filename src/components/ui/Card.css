@@ -1,0 +1,105 @@
+/* ── Base Card ─────────────────────────────────────────────── */
+.card {
+  background: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-sm);
+}
+.card--pad-sm { padding: .75rem; }
+.card--pad-md { padding: 1.25rem; }
+.card--pad-lg { padding: 1.75rem; }
+
+.card--clickable {
+  cursor: pointer;
+  transition: box-shadow .15s, transform .15s;
+}
+.card--clickable:hover {
+  box-shadow: var(--shadow-md);
+  transform: translateY(-2px);
+}
+.card--clickable:focus-visible {
+  outline: 2px solid var(--color-primary);
+  outline-offset: 2px;
+}
+
+/* ── Item Card ─────────────────────────────────────────────── */
+.item-card {
+  background: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-lg);
+  border-top: 3px solid var(--color-border);
+  padding: 1.1rem 1.2rem;
+  box-shadow: var(--shadow-sm);
+  display: flex;
+  flex-direction: column;
+  gap: .5rem;
+  transition: box-shadow .15s, transform .15s;
+}
+.item-card:hover { box-shadow: var(--shadow-md); transform: translateY(-2px); }
+
+.item-card--lost    { border-top-color: var(--color-lost); }
+.item-card--found   { border-top-color: var(--color-found); }
+.item-card--matched { border-top-color: var(--color-matched); }
+.item-card--claim   { border-top-color: var(--color-primary); }
+
+.item-card__header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: .5rem;
+  flex-wrap: wrap;
+}
+
+.item-card__title {
+  font-size: 1rem;
+  font-weight: 600;
+  color: var(--color-text);
+  line-height: 1.3;
+}
+
+.item-card__date { font-size: .78rem; color: var(--color-text-muted); }
+
+.item-card__meta {
+  display: flex;
+  flex-wrap: wrap;
+  gap: .75rem;
+  font-size: .8rem;
+  color: var(--color-text-muted);
+}
+.item-card__meta-line { font-size: .82rem; color: var(--color-text-muted); }
+
+.item-card__desc {
+  font-size: .85rem;
+  color: var(--color-text-muted);
+  line-height: 1.5;
+}
+
+.item-card__actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: .5rem;
+  margin-top: .4rem;
+  flex-wrap: wrap;
+}
+
+/* ── Match Card ────────────────────────────────────────────── */
+.match-card__pair {
+  display: flex;
+  align-items: center;
+  gap: .75rem;
+  flex-wrap: wrap;
+  margin-top: .25rem;
+}
+.match-card__side {
+  display: flex;
+  flex-direction: column;
+  gap: .15rem;
+  flex: 1;
+  min-width: 120px;
+  background: var(--color-bg);
+  border-radius: var(--radius);
+  padding: .5rem .75rem;
+}
+.match-card__label { font-size: .72rem; font-weight: 600; text-transform: uppercase; color: var(--color-text-muted); }
+.match-card__value { font-size: .88rem; font-weight: 500; }
+.match-card__arrow { font-size: 1.2rem; color: var(--color-text-muted); }

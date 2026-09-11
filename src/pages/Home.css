@@ -1,0 +1,172 @@
+/* ── Hero ──────────────────────────────────────────────────── */
+.hero {
+  background: linear-gradient(135deg, #eff6ff 0%, #f0fdf4 100%);
+  border-bottom: 1px solid var(--color-border);
+  padding: 3.5rem 0 3rem;
+}
+
+.hero__inner {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 2rem;
+}
+
+.hero__copy { max-width: 560px; }
+
+.hero__eyebrow {
+  display: inline-block;
+  font-size: .78rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: .1em;
+  color: var(--color-primary);
+  margin-bottom: .75rem;
+  background: #dbeafe;
+  padding: .25rem .65rem;
+  border-radius: 999px;
+}
+
+.hero__heading {
+  font-size: clamp(1.8rem, 4vw, 2.6rem);
+  font-weight: 800;
+  line-height: 1.18;
+  color: var(--color-text);
+  margin-bottom: .9rem;
+}
+
+.hero__sub {
+  font-size: 1rem;
+  color: var(--color-text-muted);
+  line-height: 1.65;
+  margin-bottom: 1.5rem;
+  max-width: 480px;
+}
+
+.hero__cta {
+  display: flex;
+  gap: .75rem;
+  flex-wrap: wrap;
+}
+
+.hero__emoji {
+  font-size: clamp(4rem, 10vw, 7rem);
+  flex-shrink: 0;
+  line-height: 1;
+  user-select: none;
+}
+
+/* ── Stats bar ─────────────────────────────────────────────── */
+.stats-bar {
+  background: var(--color-text);
+  color: #fff;
+  padding: 1.1rem 0;
+}
+
+.stats-bar__inner {
+  display: flex;
+  justify-content: space-around;
+  gap: 1rem;
+  flex-wrap: wrap;
+}
+
+.stats-bar__item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: .15rem;
+}
+
+.stats-bar__value {
+  font-size: 1.6rem;
+  font-weight: 800;
+  color: #60a5fa;
+  line-height: 1;
+}
+
+.stats-bar__label {
+  font-size: .75rem;
+  color: #94a3b8;
+  text-transform: uppercase;
+  letter-spacing: .06em;
+}
+
+/* ── Quick links ───────────────────────────────────────────── */
+.quick-links {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(230px, 1fr));
+  gap: 1rem;
+}
+
+.quick-link {
+  display: flex;
+  align-items: flex-start;
+  gap: .9rem;
+  padding: 1.1rem 1.2rem;
+  border-radius: var(--radius-lg);
+  border: 1.5px solid transparent;
+  transition: transform .15s, box-shadow .15s;
+  cursor: pointer;
+}
+
+.quick-link:hover { transform: translateY(-2px); box-shadow: var(--shadow-md); }
+
+.quick-link__icon { font-size: 1.6rem; line-height: 1; flex-shrink: 0; margin-top: .1rem; }
+.quick-link__label { font-weight: 600; font-size: .95rem; margin-bottom: .2rem; }
+.quick-link__desc  { font-size: .8rem; opacity: .8; line-height: 1.4; }
+
+.ql--lost    { background: #fff1f2; border-color: #fecaca; color: #9b1c1c; }
+.ql--found   { background: #f0fdf4; border-color: #bbf7d0; color: #14532d; }
+.ql--browse  { background: #eff6ff; border-color: #bfdbfe; color: #1e3a8a; }
+.ql--claims  { background: #fefce8; border-color: #fde68a; color: #78350f; }
+
+/* ── Recent grids ──────────────────────────────────────────── */
+.home__grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(270px, 1fr));
+  gap: 1.1rem;
+}
+
+/* ── How it works ──────────────────────────────────────────── */
+.how-it-works {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+  gap: 1.5rem;
+}
+
+.how-step {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  background: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-lg);
+  padding: 1.75rem 1.25rem;
+  gap: .5rem;
+  box-shadow: var(--shadow-sm);
+}
+
+.how-step__num {
+  width: 2rem;
+  height: 2rem;
+  background: var(--color-primary);
+  color: #fff;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: .85rem;
+  font-weight: 700;
+  flex-shrink: 0;
+}
+
+.how-step__icon { font-size: 1.8rem; line-height: 1; margin: .25rem 0; }
+.how-step__title { font-size: 1rem; font-weight: 700; }
+.how-step__desc  { font-size: .84rem; color: var(--color-text-muted); line-height: 1.5; }
+
+/* ── Responsive ────────────────────────────────────────────── */
+@media (max-width: 640px) {
+  .hero__emoji { display: none; }
+  .hero { padding: 2.5rem 0 2rem; }
+}
