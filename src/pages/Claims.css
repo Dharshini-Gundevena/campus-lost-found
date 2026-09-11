@@ -1,0 +1,159 @@
+/* ── Hero ──────────────────────────────────────────────────── */
+.claims__hero {
+  background: linear-gradient(135deg, #fefce8 0%, #eff6ff 100%);
+  border-bottom: 1px solid var(--color-border);
+  padding: 2.25rem 0 1.75rem;
+}
+.claims__hero-title { font-size: 1.75rem; font-weight: 800; margin-bottom: .3rem; }
+.claims__hero-sub   { font-size: .92rem; color: var(--color-text-muted); }
+
+/* ── Summary strip ─────────────────────────────────────────── */
+.claims__summary {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 1rem;
+  margin: 1.5rem 0 1.25rem;
+}
+
+@media (max-width: 540px) { .claims__summary { grid-template-columns: repeat(2, 1fr); } }
+
+.claims__summary-item {
+  background: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-lg);
+  padding: 1rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: .2rem;
+  box-shadow: var(--shadow-sm);
+}
+
+.claims__summary-value {
+  font-size: 1.8rem;
+  font-weight: 800;
+  line-height: 1;
+}
+.claims__summary-label {
+  font-size: .72rem;
+  text-transform: uppercase;
+  letter-spacing: .07em;
+  color: var(--color-text-muted);
+  font-weight: 600;
+}
+
+.summary--total    .claims__summary-value { color: var(--color-primary); }
+.summary--pending  .claims__summary-value { color: var(--color-pending); }
+.summary--approved .claims__summary-value { color: var(--color-approved); }
+.summary--rejected .claims__summary-value { color: var(--color-rejected); }
+
+/* ── Info banners ──────────────────────────────────────────── */
+.claims__info-banners {
+  display: flex;
+  flex-direction: column;
+  gap: .5rem;
+  margin-bottom: 1.5rem;
+}
+
+.claims__info-banner {
+  display: flex;
+  align-items: flex-start;
+  gap: .65rem;
+  padding: .7rem 1rem;
+  border-radius: var(--radius);
+  font-size: .84rem;
+  line-height: 1.5;
+}
+.claims__info-banner span { font-size: 1.1rem; flex-shrink: 0; margin-top: .05rem; }
+
+.info--pending  { background: #fef3c7; color: #78350f; border-left: 3px solid var(--color-pending); }
+.info--approved { background: #dcfce7; color: #14532d; border-left: 3px solid var(--color-approved); }
+.info--rejected { background: #fee2e2; color: #7f1d1d; border-left: 3px solid var(--color-rejected); }
+
+/* ── Tabs ──────────────────────────────────────────────────── */
+.claims__tabs {
+  display: flex;
+  gap: .25rem;
+  border-bottom: 2px solid var(--color-border);
+  margin-bottom: 1.25rem;
+  flex-wrap: wrap;
+}
+
+.claims__tab {
+  display: flex;
+  align-items: center;
+  gap: .4rem;
+  padding: .55rem .85rem;
+  font-size: .88rem;
+  font-weight: 500;
+  color: var(--color-text-muted);
+  background: transparent;
+  border-bottom: 2px solid transparent;
+  margin-bottom: -2px;
+  border-radius: var(--radius) var(--radius) 0 0;
+  transition: color .15s, border-color .15s, background .15s;
+}
+.claims__tab:hover          { color: var(--color-text); background: var(--color-bg); }
+.claims__tab--active        { color: var(--color-primary); border-bottom-color: var(--color-primary); }
+
+.claims__tab-count {
+  background: var(--color-bg);
+  color: var(--color-text-muted);
+  border-radius: 999px;
+  padding: .05rem .42rem;
+  font-size: .72rem;
+  font-weight: 700;
+}
+.claims__tab--active .claims__tab-count {
+  background: #dbeafe;
+  color: var(--color-primary);
+}
+
+/* ── Cards grid ────────────────────────────────────────────── */
+.claims__grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: 1.1rem;
+  margin-bottom: 2rem;
+}
+
+.claims__card-wrap {
+  display: flex;
+  flex-direction: column;
+  gap: .5rem;
+}
+
+.claims__card-actions {
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  padding: 0 .25rem;
+}
+
+.claims__collect-note,
+.claims__pending-note {
+  font-size: .8rem;
+  color: var(--color-text-muted);
+}
+
+.claims__collect-note { color: var(--color-found); font-weight: 500; }
+
+/* ── Bottom CTA ────────────────────────────────────────────── */
+.claims__cta {
+  display: flex;
+  align-items: center;
+  gap: .75rem;
+  padding: 1.25rem 1.5rem;
+  background: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-lg);
+  flex-wrap: wrap;
+  margin-top: .5rem;
+}
+
+.claims__cta p {
+  font-size: .9rem;
+  color: var(--color-text-muted);
+  flex: 1;
+  min-width: 180px;
+}

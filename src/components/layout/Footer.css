@@ -1,0 +1,58 @@
+.footer {
+  background: var(--color-text);
+  color: #e2e8f0;
+  margin-top: auto;
+}
+
+.footer__inner {
+  display: grid;
+  grid-template-columns: 2fr 1fr 1fr;
+  gap: 2.5rem;
+  padding-block: 2.5rem;
+}
+
+.footer__brand-icon { font-size: 1.4rem; }
+.footer__brand-name {
+  display: block;
+  font-weight: 700;
+  font-size: 1rem;
+  color: #fff;
+  margin: .4rem 0 .5rem;
+}
+.footer__tagline {
+  font-size: .82rem;
+  color: #94a3b8;
+  line-height: 1.5;
+  max-width: 240px;
+}
+
+.footer__nav-heading {
+  font-size: .78rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: .08em;
+  color: #94a3b8;
+  margin-bottom: .7rem;
+}
+.footer__nav ul { display: flex; flex-direction: column; gap: .4rem; }
+.footer__nav a {
+  font-size: .88rem;
+  color: #cbd5e1;
+  transition: color .15s;
+}
+.footer__nav a:hover { color: #fff; }
+
+.footer__bottom {
+  border-top: 1px solid #2d3748;
+  padding-block: .9rem;
+  font-size: .78rem;
+  color: #64748b;
+}
+
+@media (max-width: 640px) {
+  .footer__inner {
+    grid-template-columns: 1fr;
+    gap: 1.5rem;
+    padding-block: 1.75rem;
+  }
+}

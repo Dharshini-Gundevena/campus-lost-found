@@ -1,0 +1,28 @@
+.section {
+  padding-top: 2rem;
+}
+.section--no-pad-top { padding-top: 0; }
+
+.section__header {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 1rem;
+  margin-bottom: 1.25rem;
+  flex-wrap: wrap;
+}
+
+.section__heading-group { display: flex; flex-direction: column; gap: .2rem; }
+
+.section__title {
+  font-size: 1.25rem;
+  font-weight: 700;
+  color: var(--color-text);
+}
+
+.section__subtitle {
+  font-size: .88rem;
+  color: var(--color-text-muted);
+}
+
+.section__action { flex-shrink: 0; }
