@@ -4,8 +4,9 @@ const express = require("express");
 const cors = require("cors");
 
 const healthRoutes = require("./routes/healthRoutes");
-const itemRoutes = require("./routes/itemRoutes");
+const itemRoutes   = require("./routes/itemRoutes");
 const { itemClaimRouter, claimRouter } = require("./routes/claimRoutes");
+const matchRoutes  = require("./routes/matchRoutes");
 const { errorHandler } = require("./middleware/errorHandler");
 
 const app = express();
@@ -16,10 +17,11 @@ app.use(cors());
 app.use(express.json());
 
 // ── Routes ────────────────────────────────────────────────────────────────────
-app.use("/health", healthRoutes);
-app.use("/items", itemRoutes);
+app.use("/health",              healthRoutes);
+app.use("/items",               itemRoutes);
 app.use("/items/:itemId/claims", itemClaimRouter);
-app.use("/claims", claimRouter);
+app.use("/items/:id/matches",   matchRoutes);
+app.use("/claims",              claimRouter);
 
 // ── Centralised error handler (must be last) ──────────────────────────────────
 app.use(errorHandler);
